@@ -46,6 +46,9 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => AdaptiveTheme.of(context).toggleThemeMode(),
+        ),
         appBar: AppBar(title: Text(S.of(context).appbar_title)),
         body: Center(
           child: Text(S.of(context).main_content),
