@@ -21,6 +21,11 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: light,
         darkTheme: dark,
+        initialRoute: '/',
+        routes: {
+          '/': (context) => Home(),
+          '/second': (context) => SecondScreen(),
+        },
         localizationsDelegates: [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -29,7 +34,6 @@ class App extends StatelessWidget {
         ],
         supportedLocales: S.delegate.supportedLocales,
         title: 'Adaptive Theme Demo',
-        home: Home(),
       ),
     );
   }
@@ -46,12 +50,62 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => AdaptiveTheme.of(context).toggleThemeMode(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => AdaptiveTheme.of(context).toggleThemeMode(),
+      ),
+      drawer: MainDrawer(),
+      appBar: CustomAppBar(S.of(context).appbar_title),
+      //appBar: AppBar(title: Text(S.of(context).appbar_title)),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/second');
+          },
+          child: Text('Launch screen'),
         ),
-        appBar: AppBar(title: Text(S.of(context).appbar_title)),
-        body: Center(
-          child: Text(S.of(context).main_content),
-        ));
+      ),
+    );
+  }
+}
+
+class SecondScreen extends StatelessWidget {
+  const SecondScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppBar('Second Screen'),
+      body: Container(
+        child: Text('Second screen'),
+      ),
+    );
+  }
+}
+
+class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
+  final String _title;
+
+  @override
+  final Size preferredSize;
+
+  CustomAppBar(this._title, {Key? key})
+      : preferredSize = Size.fromHeight(50.0),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: Text('$_title'),
+      centerTitle: true,
+    );
+  }
+}
+
+class MainDrawer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Icon(Icons.import_contacts),
+    );
   }
 }
